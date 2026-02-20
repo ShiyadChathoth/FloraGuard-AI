@@ -1,0 +1,9 @@
+Add your TensorFlow Lite model file here.
+
+Recommended filename:
+model.tflite
+
+Note:
+Any .tflite filename in this assets folder is auto-detected at runtime.
+
+The app runs fully offline and loads this file from assets at runtime.

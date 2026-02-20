@@ -1,0 +1,211 @@
+​FloraGuard AI: Master Project Document​
+​Description:​​Intelligent Mobile Application for Plant​​Disease Detection & Care​
+​Team:​​Abhiroop, Sourav, Sohin, Abhiram (Guide: Jinsha​​K.)​
+
+​PART 1: Software Implementation Plan (SIP)​
+​1. Executive Summary​
+​ loraGuard AI is a mobile application designed to assist in precision farming, home gardening,​
+F
+​and greenhouse management. The core strength of the application is its​​100% Offline​
+​Capability​​, utilizing edge computing via TensorFlow​​Lite to diagnose plant diseases and​
+​provide actionable treatments without requiring an internet connection.​
+
+​2. Technology Stack​
+​​ F
+●
+​ rontend (Mobile):​​Android (Kotlin preferred for modern​​Android development, or Java).​
+​●​ ​UI Framework:​​Android Jetpack Compose.​
+​●​ ​AI / Machine Learning:​​Python, TensorFlow / Keras​​(for model training), TensorFlow Lite​
+​(for mobile inference).​
+​●​ ​Data Management:​​SQLite (Room Persistence Library​​in Android) and JSON for offline​
+​data storage.​
+​●​ ​Hardware Integration:​​CameraX API for high-resolution​​image capture.​
+
+​3. Development Phases & Task Breakdown​
+​Phase 1: AI Model Development & Conversion (Weeks 1-3)​
+​Goal:​​Train a lightweight CNN model capable of running​​efficiently on edge devices.​
+​●​ T
+​ ask 1.1: Data Collection & Preprocessing:​​Gather​​datasets (e.g., PlantVillage) containing​
+​healthy and diseased plant leaves. Apply data augmentation (rotation, flipping, zooming)​
+​to improve model robustness.​
+​●​ ​Task 1.2: Model Training:​​Utilize Transfer Learning​​(e.g., MobileNetV2 or EfficientNet-B0)​
+​in Python/TensorFlow. These architectures are optimized for high accuracy and low​
+​latency on mobile devices.​
+​●​ ​Task 1.3: Model Conversion:​​Convert the trained .pb​​or .h5 model into the .tflite format.​
+​Apply quantization (e.g., INT8) to reduce model size for the mobile bundle.​
+
+​Phase 2: Android App Setup & UI (Weeks 4-5)​
+​Goal:​​Build the user-centric native interface.​
+​●​ T
+​ ask 2.1: UI/UX Implementation:​​Create screens for​​the Home Dashboard,​
+​Camera/Upload view, Diagnosis Results, and Plant Care Recommendations.​
+​●​ ​Task 2.2: Camera Integration:​​Implement Android CameraX​​to capture high-resolution​
+
+​images of plant leaves directly within the app.​
+
+​Phase 3: The Inference Engine (Week 6)​
+​Goal:​​Integrate the AI model into the mobile app for​​offline processing.​
+​​ T
+●
+​ ask 3.1: TFLite Integration:​​Bundle the .tflite model​​in the Android assets folder.​
+​●​ ​Task 3.2: Image Preprocessing Pipeline:​​Write Kotlin/Java​​code to resize and normalize​
+​the captured bitmap images to match the model's expected input dimensions (e.g.,​
+​224x224 RGB).​
+​●​ ​Task 3.3: Execution & Mapping:​​Run the TFLite interpreter​​and map the output array​
+​probabilities to specific plant diseases.​
+
+​Phase 4: Local Database & Care Logic (Weeks 7-8)​
+​Goal:​​Implement the offline repository of treatments​​and plant care guides.​
+​●​ T
+​ ask 4.1: SQLite Setup:​​Use the Android Room library​​to create a local database storing​
+​comprehensive details on:​
+​○​ ​Soil Composition​​(Types, pH)​
+​○​ ​Watering Logic​​(Intervals, volume)​
+​○​ ​Light Exposure​​(Sun vs. Shade)​
+​○​ ​Nutrient Guide​​(Fertilizers)​
+​●​ ​Task 4.2: Actionable Treatments:​​Map the output disease​​classifications from the AI​
+​model to step-by-step treatment plans stored in JSON/SQLite.​
+
+​Phase 5: Testing & Future Proofing (Week 9)​
+​Goal:​​Finalize the application and prepare for the​​"Road Ahead."​
+​●​ T
+​ ask 5.1: Offline Testing:​​Strictly test the application​​in airplane mode to guarantee 100%​
+​offline functionality.​
+​●​ ​Task 5.2: Localization Prep:​​Extract hardcoded strings​​to strings.xml to prepare for the​
+​multi-language interface targeted at rural global farmers.​
+
+​4. Logical Workflow Architecture​
+​[User captures/uploads leaf image]​
+​|​
+​v​
+​[Android CameraX API] --> [Image Preprocessor (Resize/Normalize)]​
+​|​
+​v​
+​[TensorFlow Lite Interpreter (Offline Inference)]​
+​|​
+​v​
+​[Disease Output Label (e.g., "Tomato Early Blight")]​
+​|​
+​v​
+
+​[Query SQLite Database for Treatment & Care Rules]​
+​|​
+​v​
+​[UI Renders: Diagnosis + Treatment + Care Recommendations]​
+
+​PART 2: Software Requirements Specification (SRS)​
+​1. Introduction​
+​1.1 Purpose​
+​ he purpose of FloraGuard AI is to provide an intelligent, user-centric mobile platform for​
+T
+​managing plant health. By combining computer vision with agricultural expertise, it aims to​
+​empower farmers, home gardeners, and greenhouse managers with instant, accurate​
+​diagnostics and tailored care plans.​
+
+​1.2 Scope​
+​ he software performs real-time plant disease detection purely on the user's mobile device​
+T
+​(edge computing). It encompasses image capture, AI inference, and rendering of specialized​
+​care regimens (soil, water, light, nutrients) sourced from a local database.​
+
+​2. Functional Requirements (FR)​
+​2.1 Intelligent Plant Diagnosis​
+​●​ F
+​ R-01:​​The system MUST allow users to input plant​​names manually or upload/capture​
+​high-resolution images via the device camera.​
+​●​ ​FR-02:​​The system MUST process the visual data locally​​to identify the plant species and​
+​detect underlying diseases.​
+​●​ ​FR-03:​​The system MUST display an "Actionable Treatment"​​view detailing step-by-step​
+​guidance to cure identified diseases.​
+
+​2.2 Offline Inference Engine​
+​●​ F
+​ R-04:​​The application MUST bundle a pre-trained TensorFlow​​Lite model within its​
+​installation package.​
+​●​ ​FR-05:​​All image preprocessing and model inference​​MUST execute entirely offline​
+​without requiring network calls to cloud servers.​
+
+​2.3 Plant Care Database​
+​●​ F
+​ R-06:​​The system MUST maintain a local data store​​(SQLite/JSON) encompassing care​
+​logic for supported plants.​
+​●​ ​FR-07:​​The system MUST display recommendations for​​Soil Composition​​(pH, soil type).​
+​●​ ​FR-08:​​The system MUST display​​Watering Logic​​(hydration​​intervals and volume based​
+​on plant stage).​
+
+​●​ F
+​ R-09:​​The system MUST display​​Light Exposure​​requirements (e.g., Full Sun, Partial​
+​Shade).​
+​●​ ​FR-10:​​The system MUST display a​​Nutrient Guide​​detailing​​fertilizer types and​
+​application timing.​
+
+​3. Non-Functional Requirements (NFR)​
+​3.1 Availability & Reliability​
+​●​ N
+​ FR-01 (Offline Capability):​​100% of the core AI diagnostic​​features and care rule​
+​queries MUST function reliably without an internet connection.​
+
+​3.2 Performance​
+​●​ N
+​ FR-02:​​The end-to-end process from image capture​​to diagnosis display SHOULD​
+​complete in under 3 seconds on a standard mid-range Android smartphone.​
+
+​3.3 Usability​
+​●​ N
+​ FR-03:​​The interface MUST be highly intuitive, catering​​to varying levels of digital literacy​
+​among rural farmers and casual gardeners.​
+
+​4. Future Enhancements (The Road Ahead)​
+​While not included in version 1.0, the architecture should accommodate the following features:​
+​​ F
+●
+​ E-01:​​Expansion of the AI model to support rare and​​medicinal plant species.​
+​●​ ​FE-02:​​A multi-language localization system for international​​rural farming communities.​
+​●​ ​FE-03:​​Smart Alerts providing weather-based care advice,​​triggered by integration with​
+​local weather REST APIs (this feature will necessitate internet connectivity).​
+
+​ ART 3: Appendix - Codex / AI Code Generation​
+P
+​Prompt​
+​ he following prompt can be used with an AI coding assistant (e.g., OpenAI Codex, ChatGPT,​
+T
+​Cursor, GitHub Copilot) to bootstrap the development of the FloraGuard AI application.​
+​System/User Prompt:​
+"​ You are an expert Android mobile app developer with deep knowledge of Kotlin,​
+​Android Jetpack components, and Edge AI. I need you to build the foundational​
+​codebase for an offline-first mobile application named 'FloraGuard AI'.​
+​Tech Stack:​
+​​
+●
+​●​
+​●​
+​●​
+
+​ anguage: Kotlin​
+L
+​UI: Jetpack Compose​
+​Camera: Android CameraX API​
+​AI/ML: TensorFlow Lite (TFLite) for Android​
+
+​●​ ​Local Database: Room Persistence Library (SQLite)​
+​Core Features to Implement:​
+​1.​ ​Camera Screen:​​Use CameraX to provide a live preview​​and allow the user to​
+​capture a high-resolution image of a plant leaf. Include a button to upload​
+​from the gallery.​
+​2.​ ​TFLite Inference Engine:​​Write a helper class (TFLiteClassifier)​​that takes the​
+​captured Bitmap, resizes it to 224x224, normalizes the pixel values (e.g.,​
+​dividing by 255.0f), and runs inference using a bundled .tflite model to output​
+​a disease label (e.g., 'Tomato_Early_Blight').​
+​3.​ ​Offline Care Database:​​Set up a Room database with​​an entity called​
+​PlantCarePlan. It should store fields for: diseaseName, treatmentSteps,​
+​soilComposition, wateringLogic, lightExposure, and nutrientGuide. Write the​
+​DAO to query a plan by diseaseName.​
+​4.​ ​Results Screen:​​A Compose UI screen that displays​​the captured image, the​
+​predicted disease label, and fetches the corresponding PlantCarePlan from​
+​the Room database to display the step-by-step treatment and care regimen.​
+​ lease provide the complete Kotlin code for these components, including the​
+P
+​Room DAO, Database setup, the TFLite helper class, and the main Jetpack​
+​Compose UI layout."​
+
+
