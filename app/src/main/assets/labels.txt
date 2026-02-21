@@ -1,6 +1,6 @@
+Healthy
+Pepper_Bacterial_Spot
+Potato_Early_Blight
 Tomato_Early_Blight
 Tomato_Late_Blight
 Tomato_Leaf_Mold
-Potato_Early_Blight
-Pepper_Bacterial_Spot
-Healthy
