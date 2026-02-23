@@ -52,3 +52,124 @@ fun defaultCarePlans(): List<PlantCarePlan> {
         )
     )
 }
+
+fun defaultPlantProfiles(): List<PlantCareProfile> {
+    return listOf(
+        PlantCareProfile(
+            plantName = "Aloe Vera",
+            searchKey = plantSearchKey("Aloe Vera"),
+            soilComposition = "Sandy soil or a premixed cactus potting medium.",
+            wateringLogic = "Water thoroughly and allow soil to dry completely before watering again; reduce in winter.",
+            lightExposure = "Bright, indirect sunlight; avoid harsh direct sun.",
+            nutrientGuide = "No fertilizer is usually required."
+        ),
+        PlantCareProfile(
+            plantName = "Jade Plant",
+            searchKey = plantSearchKey("Jade Plant"),
+            soilComposition = "Well-drained soil; cactus mix or potting soil amended with sand/perlite.",
+            wateringLogic = "Water when soil is dry; less is more and avoid overwatering.",
+            lightExposure = "At least six hours of indirect light daily; brighter light helps.",
+            nutrientGuide = "Balanced fertilizer once a year in early spring."
+        ),
+        PlantCareProfile(
+            plantName = "Pothos",
+            searchKey = plantSearchKey("Pothos"),
+            soilComposition = "Well-drained potting soil.",
+            wateringLogic = "Water thoroughly, then let soil dry between waterings; avoid constant dampness.",
+            lightExposure = "Bright, indirect light; tolerates low light and fluorescent light.",
+            nutrientGuide = "Balanced fertilizer every two months; skip feeding in winter."
+        ),
+        PlantCareProfile(
+            plantName = "Peace Lily",
+            searchKey = plantSearchKey("Peace Lily"),
+            soilComposition = "Well-drained potting soil.",
+            wateringLogic = "Keep soil moist but not soggy; let it dry slightly between waterings.",
+            lightExposure = "Bright, indirect light.",
+            nutrientGuide = "Fertilize in spring and summer using an organic fertilizer."
+        ),
+        PlantCareProfile(
+            plantName = "Spider Plant",
+            searchKey = plantSearchKey("Spider Plant"),
+            soilComposition = "General purpose potting soil.",
+            wateringLogic = "Water about once a week and allow soil to dry between waterings.",
+            lightExposure = "Indirect to moderate light.",
+            nutrientGuide = "Fertilize every three to four months."
+        ),
+        PlantCareProfile(
+            plantName = "Tomato",
+            searchKey = plantSearchKey("Tomato"),
+            soilComposition = "Loose, well-drained loamy soil rich in organic matter.",
+            wateringLogic = "Water deeply and consistently; keep soil evenly moist, not soggy.",
+            lightExposure = "Full sun (6-8+ hours daily).",
+            nutrientGuide = "Balanced fertilizer early; switch to higher phosphorus/potassium during flowering and fruiting."
+        ),
+        PlantCareProfile(
+            plantName = "Tomato Plant",
+            searchKey = plantSearchKey("Tomato Plant"),
+            soilComposition = "Loose, well-drained loamy soil rich in organic matter.",
+            wateringLogic = "Water deeply and consistently; keep soil evenly moist, not soggy.",
+            lightExposure = "Full sun (6-8+ hours daily).",
+            nutrientGuide = "Balanced fertilizer early; switch to higher phosphorus/potassium during flowering and fruiting."
+        ),
+        PlantCareProfile(
+            plantName = "Pepper",
+            searchKey = plantSearchKey("Pepper"),
+            soilComposition = "Well-drained, fertile soil with organic matter.",
+            wateringLogic = "Water deeply when the top layer dries; avoid waterlogging.",
+            lightExposure = "Full sun (6-8+ hours daily).",
+            nutrientGuide = "Balanced fertilizer; avoid excess nitrogen once flowering starts."
+        ),
+        PlantCareProfile(
+            plantName = "Bell Pepper",
+            searchKey = plantSearchKey("Bell Pepper"),
+            soilComposition = "Well-drained, fertile soil with organic matter.",
+            wateringLogic = "Water deeply when the top layer dries; avoid waterlogging.",
+            lightExposure = "Full sun (6-8+ hours daily).",
+            nutrientGuide = "Balanced fertilizer; avoid excess nitrogen once flowering starts."
+        ),
+        PlantCareProfile(
+            plantName = "Chili Pepper",
+            searchKey = plantSearchKey("Chili Pepper"),
+            soilComposition = "Well-drained, fertile soil with organic matter.",
+            wateringLogic = "Water deeply when the top layer dries; avoid waterlogging.",
+            lightExposure = "Full sun (6-8+ hours daily).",
+            nutrientGuide = "Balanced fertilizer; avoid excess nitrogen once flowering starts."
+        ),
+        PlantCareProfile(
+            plantName = "Chilli Pepper",
+            searchKey = plantSearchKey("Chilli Pepper"),
+            soilComposition = "Well-drained, fertile soil with organic matter.",
+            wateringLogic = "Water deeply when the top layer dries; avoid waterlogging.",
+            lightExposure = "Full sun (6-8+ hours daily).",
+            nutrientGuide = "Balanced fertilizer; avoid excess nitrogen once flowering starts."
+        ),
+        PlantCareProfile(
+            plantName = "Potato",
+            searchKey = plantSearchKey("Potato"),
+            soilComposition = "Loose, well-drained soil; avoid compacted clay.",
+            wateringLogic = "Keep soil evenly moist; avoid letting it dry out during tuber formation.",
+            lightExposure = "Full sun.",
+            nutrientGuide = "Moderate nitrogen; ensure adequate phosphorus and potassium."
+        ),
+        PlantCareProfile(
+            plantName = "Potato Plant",
+            searchKey = plantSearchKey("Potato Plant"),
+            soilComposition = "Loose, well-drained soil; avoid compacted clay.",
+            wateringLogic = "Keep soil evenly moist; avoid letting it dry out during tuber formation.",
+            lightExposure = "Full sun.",
+            nutrientGuide = "Moderate nitrogen; ensure adequate phosphorus and potassium."
+        ),
+        PlantCareProfile(
+            plantName = "Sunflower",
+            searchKey = plantSearchKey("Sunflower"),
+            soilComposition = "Loose, well-drained soil with organic matter.",
+            wateringLogic = "Water regularly, especially during establishment; avoid waterlogging.",
+            lightExposure = "Full sun (6-8+ hours daily).",
+            nutrientGuide = "Balanced fertilizer at planting; avoid excess nitrogen."
+        )
+    )
+}
+
+private fun plantSearchKey(name: String): String {
+    return name.lowercase().replace(Regex("[^a-z0-9]"), "")
+}

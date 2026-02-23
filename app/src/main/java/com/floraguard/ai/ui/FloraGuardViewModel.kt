@@ -18,7 +18,8 @@ import kotlinx.coroutines.launch
 class FloraGuardViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = PlantCareRepository(
-        FloraGuardDatabase.getInstance(application).plantCarePlanDao()
+        FloraGuardDatabase.getInstance(application).plantCarePlanDao(),
+        FloraGuardDatabase.getInstance(application).plantCareProfileDao()
     )
     private val classifier = TFLiteClassifier(application)
 
@@ -28,6 +29,8 @@ class FloraGuardViewModel(application: Application) : AndroidViewModel(applicati
     init {
         viewModelScope.launch {
             repository.ensureSeedData()
+            val names = repository.getAllPlantNames()
+            _uiState.update { it.copy(plantSuggestions = names) }
         }
     }
 
@@ -37,7 +40,9 @@ class FloraGuardViewModel(application: Application) : AndroidViewModel(applicati
                 selectedImage = bitmap,
                 isProcessing = true,
                 errorMessage = null,
-                carePlan = null
+                carePlan = null,
+                plantCareProfile = null,
+                resultType = ResultType.DIAGNOSIS
             )
         }
 
@@ -63,6 +68,7 @@ class FloraGuardViewModel(application: Application) : AndroidViewModel(applicati
                     diagnosisLabel = diagnosis.label,
                     confidence = diagnosis.confidence,
                     carePlan = plan,
+                    resultType = ResultType.DIAGNOSIS,
                     isProcessing = false,
                     errorMessage = when {
                         diagnosis.label == "Model_Not_Available" ->
@@ -93,6 +99,8 @@ class FloraGuardViewModel(application: Application) : AndroidViewModel(applicati
                 diagnosisLabel = query,
                 confidence = null,
                 carePlan = null,
+                plantCareProfile = null,
+                resultType = ResultType.MANUAL_DISEASE,
                 isProcessing = true,
                 errorMessage = null
             )
@@ -106,6 +114,44 @@ class FloraGuardViewModel(application: Application) : AndroidViewModel(applicati
                     isProcessing = false,
                     errorMessage = if (plan == null) {
                         "No offline care plan found for $query."
+                    } else {
+                        null
+                    }
+                )
+            }
+        }
+    }
+
+    fun lookupPlantCareManually(plantName: String) {
+        val query = plantName.trim()
+        if (query.isEmpty()) {
+            _uiState.update {
+                it.copy(errorMessage = "Enter a plant name before lookup.")
+            }
+            return
+        }
+
+        _uiState.update {
+            it.copy(
+                selectedImage = null,
+                diagnosisLabel = query,
+                confidence = null,
+                carePlan = null,
+                plantCareProfile = null,
+                resultType = ResultType.MANUAL_PLANT_CARE,
+                isProcessing = true,
+                errorMessage = null
+            )
+        }
+
+        viewModelScope.launch {
+            val profile = repository.getProfileForPlant(query)
+            _uiState.update {
+                it.copy(
+                    plantCareProfile = profile,
+                    isProcessing = false,
+                    errorMessage = if (profile == null) {
+                        "No offline plant care found for $query."
                     } else {
                         null
                     }

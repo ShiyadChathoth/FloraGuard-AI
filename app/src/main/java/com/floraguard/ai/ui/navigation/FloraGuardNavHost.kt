@@ -32,6 +32,7 @@ fun FloraGuardNavHost(
     val navController = rememberNavController()
     val uiState by viewModel.uiState.collectAsState()
     var manualInput by rememberSaveable { mutableStateOf("") }
+    var manualPlantInput by rememberSaveable { mutableStateOf("") }
 
     NavHost(navController = navController, startDestination = Destination.SPLASH) {
         composable(Destination.SPLASH) {
@@ -47,12 +48,19 @@ fun FloraGuardNavHost(
             HomeScreen(
                 manualDiseaseInput = manualInput,
                 onManualDiseaseInputChange = { manualInput = it },
+                manualPlantInput = manualPlantInput,
+                onManualPlantInputChange = { manualPlantInput = it },
+                plantSuggestions = uiState.plantSuggestions,
                 onOpenCamera = {
                     viewModel.prepareForNewDiagnosis()
                     navController.navigate(Destination.CAMERA)
                 },
                 onManualLookup = {
                     viewModel.lookupDiseaseManually(manualInput)
+                    navController.navigate(Destination.RESULTS)
+                },
+                onManualPlantLookup = {
+                    viewModel.lookupPlantCareManually(manualPlantInput)
                     navController.navigate(Destination.RESULTS)
                 },
                 isDarkTheme = isDarkTheme,
@@ -75,6 +83,12 @@ fun FloraGuardNavHost(
         composable(Destination.RESULTS) {
             ResultScreen(
                 uiState = uiState,
+                manualPlantInput = manualPlantInput,
+                onManualPlantInputChange = { manualPlantInput = it },
+                onManualPlantLookup = {
+                    viewModel.lookupPlantCareManually(manualPlantInput)
+                },
+                plantSuggestions = uiState.plantSuggestions,
                 onBackHome = {
                     navController.popBackStack(Destination.HOME, false)
                 },

@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [PlantCarePlan::class], version = 1, exportSchema = false)
+@Database(entities = [PlantCarePlan::class, PlantCareProfile::class], version = 2, exportSchema = false)
 abstract class FloraGuardDatabase : RoomDatabase() {
     abstract fun plantCarePlanDao(): PlantCarePlanDao
+    abstract fun plantCareProfileDao(): PlantCareProfileDao
 
     companion object {
         @Volatile
@@ -19,7 +20,9 @@ abstract class FloraGuardDatabase : RoomDatabase() {
                     context.applicationContext,
                     FloraGuardDatabase::class.java,
                     "flora_guard.db"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }
