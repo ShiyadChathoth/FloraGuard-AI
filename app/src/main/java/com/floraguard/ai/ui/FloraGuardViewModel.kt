@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.floraguard.ai.data.FloraGuardDatabase
 import com.floraguard.ai.data.PlantCareRepository
+import com.floraguard.ai.image.LeafHeuristics
 import com.floraguard.ai.ml.TFLiteClassifier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +42,20 @@ class FloraGuardViewModel(application: Application) : AndroidViewModel(applicati
         }
 
         viewModelScope.launch(Dispatchers.Default) {
+            val heuristic = LeafHeuristics.analyze(bitmap)
+            if (!heuristic.isLikelyLeaf) {
+                _uiState.update {
+                    it.copy(
+                        diagnosisLabel = "",
+                        confidence = null,
+                        carePlan = null,
+                        isProcessing = false,
+                        errorMessage = "Image doesn't look like a leaf. Try a closer shot on a plain background."
+                    )
+                }
+                return@launch
+            }
+
             val diagnosis = classifier.classify(bitmap)
             val plan = repository.getPlanForDisease(diagnosis.label)
             _uiState.update {

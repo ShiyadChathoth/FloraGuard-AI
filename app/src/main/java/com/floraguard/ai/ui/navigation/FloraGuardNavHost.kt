@@ -14,20 +14,35 @@ import com.floraguard.ai.ui.FloraGuardViewModel
 import com.floraguard.ai.ui.screen.CameraScreen
 import com.floraguard.ai.ui.screen.HomeScreen
 import com.floraguard.ai.ui.screen.ResultScreen
+import com.floraguard.ai.ui.screen.SplashScreen
 
 private object Destination {
+    const val SPLASH = "splash"
     const val HOME = "home"
     const val CAMERA = "camera"
     const val RESULTS = "results"
 }
 
 @Composable
-fun FloraGuardNavHost(viewModel: FloraGuardViewModel = viewModel()) {
+fun FloraGuardNavHost(
+    isDarkTheme: Boolean,
+    onToggleDarkTheme: (Boolean) -> Unit,
+    viewModel: FloraGuardViewModel = viewModel()
+) {
     val navController = rememberNavController()
     val uiState by viewModel.uiState.collectAsState()
     var manualInput by rememberSaveable { mutableStateOf("") }
 
-    NavHost(navController = navController, startDestination = Destination.HOME) {
+    NavHost(navController = navController, startDestination = Destination.SPLASH) {
+        composable(Destination.SPLASH) {
+            SplashScreen(
+                onFinished = {
+                    navController.navigate(Destination.HOME) {
+                        popUpTo(Destination.SPLASH) { inclusive = true }
+                    }
+                }
+            )
+        }
         composable(Destination.HOME) {
             HomeScreen(
                 manualDiseaseInput = manualInput,
@@ -39,7 +54,9 @@ fun FloraGuardNavHost(viewModel: FloraGuardViewModel = viewModel()) {
                 onManualLookup = {
                     viewModel.lookupDiseaseManually(manualInput)
                     navController.navigate(Destination.RESULTS)
-                }
+                },
+                isDarkTheme = isDarkTheme,
+                onToggleDarkTheme = onToggleDarkTheme
             )
         }
 

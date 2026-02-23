@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -13,19 +14,28 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Eco
+import androidx.compose.material.icons.outlined.Science
+import androidx.compose.material.icons.outlined.WaterDrop
+import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.RoundedCornerShape
 import com.floraguard.ai.data.PlantCarePlan
 import com.floraguard.ai.ui.FloraGuardUiState
 
@@ -163,33 +173,97 @@ private fun CarePlanSection(plan: PlantCarePlan) {
             )
             Text(text = plan.treatmentSteps)
 
-            Text(
-                text = "Soil Composition",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold
-            )
-            Text(text = plan.soilComposition)
+            PlantCareRecommendations(plan = plan)
+        }
+    }
+}
 
-            Text(
-                text = "Watering Logic",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold
-            )
-            Text(text = plan.wateringLogic)
+@Composable
+private fun PlantCareRecommendations(plan: PlantCarePlan) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = "Plant Care Recommendations",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                RecommendationCard(
+                    modifier = Modifier.weight(1f),
+                    icon = Icons.Outlined.Eco,
+                    title = "Soil Composition",
+                    description = plan.soilComposition
+                )
+                RecommendationCard(
+                    modifier = Modifier.weight(1f),
+                    icon = Icons.Outlined.WaterDrop,
+                    title = "Watering Logic",
+                    description = plan.wateringLogic
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                RecommendationCard(
+                    modifier = Modifier.weight(1f),
+                    icon = Icons.Outlined.WbSunny,
+                    title = "Light Exposure",
+                    description = plan.lightExposure
+                )
+                RecommendationCard(
+                    modifier = Modifier.weight(1f),
+                    icon = Icons.Outlined.Science,
+                    title = "Nutrient Guide",
+                    description = plan.nutrientGuide
+                )
+            }
+        }
+    }
+}
 
+@Composable
+private fun RecommendationCard(
+    modifier: Modifier,
+    icon: ImageVector,
+    title: String,
+    description: String
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                modifier = Modifier.size(28.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
             Text(
-                text = "Light Exposure",
+                text = title,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold
             )
-            Text(text = plan.lightExposure)
-
             Text(
-                text = "Nutrient Guide",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold
+                text = description,
+                style = MaterialTheme.typography.bodySmall
             )
-            Text(text = plan.nutrientGuide)
         }
     }
 }
